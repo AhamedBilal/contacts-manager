@@ -1,0 +1,31 @@
+.custom-mat-field > button {
+}
+
+.custom-table {
+  -webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.2);
+  color: #6E6E6E;
+  font-size: 12px;
+  width: 100%;
+}
+
+.custom-table thead th {
+  color: #737373;
+  font-size: 14px;
+  font-weight: 500;
+}
+.custom-table i {
+  font-size: 15px;
+  cursor: pointer;
+  color: #AAAAAA;
+}
+
+.custom-table i:hover {
+  color: black;
+}
+
+
+th[scope="row"] {
+  font-weight: 500;
+}
