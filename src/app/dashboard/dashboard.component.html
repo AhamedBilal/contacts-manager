@@ -6,7 +6,6 @@
       <mat-label>Mobile Number</mat-label>
       <input #numberInput formControlName="number" matInput maxlength="9" minlength="9" placeholder="Ex. 771422978"
              required>
-      <mat-error>Number is Required</mat-error>
     </mat-form-field>
     <mat-form-field appearance="legacy" class="float-left mr-4" (keydown.enter)="submit(myform);numberInput.focus()">
       <mat-label>Name</mat-label>
@@ -19,15 +18,16 @@
     <button mat-raised-button color="warn" type="submit" class="mr-2" *ngIf="isUpdate" (click)="cancelUpdate(myform)">Cancel
     </button>
     <button mat-raised-button color="accent" type="submit" class="float-right" (click)="openDialogGenrate()" >Generate</button>
-    <button mat-raised-button color="primary" type="submit" class=" mr-2 float-right" >Google CVS</button>
+    <button mat-raised-button color="primary" type="submit" class=" mr-2 float-right" (click)="addDoc()" >Google CVS</button>
   </form>
   <mat-divider></mat-divider>
   <div>
-    <mat-form-field appearance="legacy" class="float-left mr-4">
+    <mat-form-field appearance="legacy" class="float-left mr-4 mt-2">
       <mat-label>Search</mat-label>
       <input matInput placeholder="Ex. Ahamed or 771422978" [(ngModel)]="search" (change)="searchUsers()" >
       <mat-error>Name is Required</mat-error>
     </mat-form-field>
+    <span class="float-right">Total: {{users.length}}</span>
   </div>
   <div class="table-wrapper">
     <div class="table-responsive">

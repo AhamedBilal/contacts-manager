@@ -41,9 +41,10 @@ export class DashboardComponent implements OnInit {
   deleteUser(myform: FormGroupDirective) {
     this.userService.deleteUser(this.selectedId)
       .subscribe(value => {
-        console.log(value);
-        const index = this.users.findIndex(value1 => value1.userId === this.selectedId);
-        this.users.splice(index, 1);
+        if (value) {
+          const index = this.users.findIndex(value1 => value1.userId === this.selectedId);
+          this.users.splice(index, 1);
+        }
         this.isUpdate = false;
         this.userForm.reset();
         myform.resetForm();
@@ -57,8 +58,10 @@ export class DashboardComponent implements OnInit {
       temp.userId = this.selectedId;
       this.userService.updateUser(temp)
         .subscribe(value => {
-          const index = this.users.findIndex(value1 => value1.userId = this.selectedId);
-          this.users[index] = value;
+          if (value) {
+            const index = this.users.findIndex(value1 => value1.userId = this.selectedId);
+            this.users[index] = value;
+          }
           this.isUpdate = false;
           this.userForm.reset();
           myform.resetForm();
@@ -73,7 +76,9 @@ export class DashboardComponent implements OnInit {
       console.log(this.userForm.value);
       this.userService.addUser(this.userForm.value)
         .subscribe(res => {
-          this.users.unshift(res);
+          if (res) {
+            this.users.unshift(res);
+          }
           this.userForm.reset();
           myform.resetForm();
         }, error => console.log(error));
@@ -123,6 +128,15 @@ export class DashboardComponent implements OnInit {
           this.users = value;
         });
     }
+  }
+
+  addDoc() {
+    this.userService.addDoc()
+      .subscribe(value => {
+        if (value === 'successful') {
+          this.getAll();
+        }
+      });
   }
 }
 

@@ -1,12 +1,9 @@
-const sequelize = require('../sequelize');
 const {Op} = require("sequelize");
 const User = require('../models/User')
 const electron = require('electron');
 const {dialog} = require('electron');
 const ipc = electron.ipcMain;
-const {writeFile, mkdir} = require('fs');
-const ExcelJS = require('exceljs');
-const fs = require('fs');
+const {writeFile} = require('fs');
 const XLSX = require('xlsx');
 
 module.exports = async () => {
@@ -18,8 +15,7 @@ module.exports = async () => {
       const newUser = await User.create(user);
       event.returnValue = newUser.dataValues;
     } catch (ex) {
-      console.log(ex);
-      console.log(user);
+      event.returnValue = null;
     }
   });
 
@@ -32,7 +28,7 @@ module.exports = async () => {
       });
       event.returnValue = user;
     } catch (ex) {
-      console.log(ex);
+      event.returnValue = null;
     }
   });
 
@@ -45,6 +41,7 @@ module.exports = async () => {
       });
       event.returnValue = 'deleted';
     } catch (ex) {
+      event.returnValue = null;
     }
   });
 
@@ -55,6 +52,7 @@ module.exports = async () => {
       });
       event.returnValue = users.map(value => value.dataValues);
     } catch (ex) {
+      event.returnValue = null;
     }
 
   });
@@ -79,6 +77,7 @@ module.exports = async () => {
         event.returnValue = users.map(value => value.dataValues);
       }
     } catch (ex) {
+      event.returnValue = null;
     }
   });
   ipc.on('generate', async (event, num) => {
@@ -89,7 +88,7 @@ module.exports = async () => {
     // })
     // event.returnValue = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
     const result = await dialog.showOpenDialog({
-      buttonLabel:'Select Folder',
+      buttonLabel: 'Select Folder',
       properties: ['openDirectory']
     });
     if (result.canceled) {
@@ -100,11 +99,11 @@ module.exports = async () => {
       const newArr = [];
       let i = 1;
       console.log(num);
-      while(temp.length > 0) {
-        const ts = temp.splice(0,num);
+      while (temp.length > 0) {
+        const ts = temp.splice(0, num);
         const user = ts.map(val => val.number).join('\n');
-        writeFile(result.filePaths[0] +`\\text${new Date().toISOString().slice(0,10).replace(/-/g,"")}(${i}).txt`, user, function (err, data) {
-          if (err){
+        writeFile(result.filePaths[0] + `\\text${new Date().toISOString().slice(0, 10).replace(/-/g, "")}(${i}).txt`, user, function (err, data) {
+          if (err) {
             console.log(err)
           } else {
           }
@@ -116,4 +115,41 @@ module.exports = async () => {
 
   });
 
+  ipc.on('google-doc', async (event, num) => {
+    const result = await dialog.showOpenDialog({
+      buttonLabel: 'Select File',
+      properties: ['openFile'],
+      filters: [
+        {name: 'Sheets', extensions: ['csv', 'xlsx']},
+      ]
+    });
+    if (result.canceled) {
+      event.returnValue = result;
+    } else {
+      const workbook = await XLSX.readFile(result.filePaths[0]);
+      const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+      const regex = /7(0|1|2|5|6|7|8)\d{7}/g;
+      const temp = [];
+      json.forEach((value) => {
+        let num = value['Phone 1 - Value'] + '';
+        if (num !== '') {
+          num = num.replace(/ /g, '');
+          const numbers = num.match(regex);
+          console.log(value['Name'], num);
+          if (numbers) {
+            console.log(numbers);
+            numbers.forEach(val => {
+              temp.push({name: value['Name'] || 'unknown', number: val});
+            });
+          }
+        }
+
+      });
+      await User.bulkCreate(temp,{
+        updateOnDuplicate: ['number']
+      })
+      event.returnValue = 'successful';
+    }
+
+  });
 };

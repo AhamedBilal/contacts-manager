@@ -47,4 +47,9 @@ export class UserService {
       catchError((error: any) => Observable.throw(error.json))
     );
   }
+  addDoc(): Observable<any> {
+    return of(this.electron.ipcRenderer.sendSync('google-doc')).pipe(
+      catchError((error: any) => Observable.throw(error.json))
+    );
+  }
 }
