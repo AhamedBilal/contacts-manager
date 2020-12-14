@@ -1,0 +1,10 @@
+<h3 mat-dialog-title>Numbers per file?</h3>
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput type="number" [(ngModel)]="count">
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button color="warn" mat-dialog-close >Cancel</button>
+  <button mat-button color="primary" (click)="generate()">Generate</button>
+</mat-dialog-actions>

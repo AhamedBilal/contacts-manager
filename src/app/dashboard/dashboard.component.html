@@ -1,43 +1,50 @@
-<div class="w-100 h-100 overflow-hidden p-2">
-  <form [formGroup]="userForm" class="custom-mat-field my-1" (keydown.enter)="$event.preventDefault()" #myform="ngForm"
+<div class="wrapper p-2">
+  <form [formGroup]="userForm" class="custom-mat-field mt-1 mb-1" (keydown.enter)="$event.preventDefault()"
+        #myform="ngForm"
         (ngSubmit)="submit(myform)">
-    <mat-form-field appearance="legacy" class="float-left me-4" (keydown.enter)="name.focus()">
+    <mat-form-field appearance="legacy" class="float-left mr-4" (keydown.enter)="name.focus()">
       <mat-label>Mobile Number</mat-label>
       <input #numberInput formControlName="number" matInput maxlength="9" minlength="9" placeholder="Ex. 771422978"
              required>
       <mat-error>Number is Required</mat-error>
     </mat-form-field>
-    <mat-form-field appearance="legacy" class="float-left me-4" (keydown.enter)="submit(myform);numberInput.focus()">
+    <mat-form-field appearance="legacy" class="float-left mr-4" (keydown.enter)="submit(myform);numberInput.focus()">
       <mat-label>Name</mat-label>
       <input #name formControlName="name" matInput placeholder="Ex. Ahamed">
       <mat-error>Name is Required</mat-error>
     </mat-form-field>
-    <button #btnSubmit mat-raised-button color="primary" type="submit">ADD</button>
+    <button mat-raised-button color="primary" type="submit" class="mr-2" *ngIf="!isUpdate">Save</button>
+    <button mat-raised-button color="accent" type="submit" class="mr-2" *ngIf="isUpdate" (click)="updateUser(myform)">Update</button>
+    <button mat-raised-button color="warn" type="submit" class="mr-2" *ngIf="isUpdate" (click)="deleteUser(myform)">Delete</button>
+    <button mat-raised-button color="warn" type="submit" class="mr-2" *ngIf="isUpdate" (click)="cancelUpdate(myform)">Cancel
+    </button>
+    <button mat-raised-button color="accent" type="submit" class="float-right" (click)="openDialogGenrate()" >Generate</button>
+    <button mat-raised-button color="primary" type="submit" class=" mr-2 float-right" >Google CVS</button>
   </form>
-  <div class="table-responsive custom-table">
-    <table class="table">
-      <thead class="table-dark">
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Number</th>
-        <th scope="col"></th>
-      </tr>
-      </thead>
-    </table>
-    <table class="table">
-      <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{user.name}}</td>
-        <td>{{user.number}}</td>
-        <td></td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
+  <mat-divider></mat-divider>
   <div>
-    <mat-paginator [length]="100"
-                   [pageSize]="10"
-                   [pageSizeOptions]="[5, 10, 25, 100]">
-    </mat-paginator>
+    <mat-form-field appearance="legacy" class="float-left mr-4">
+      <mat-label>Search</mat-label>
+      <input matInput placeholder="Ex. Ahamed or 771422978" [(ngModel)]="search" (change)="searchUsers()" >
+      <mat-error>Name is Required</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="table-wrapper">
+    <div class="table-responsive">
+      <table class="table custom-table table-hover table-sm ta">
+        <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of users" (click)="onTablePressed(user)">
+          <td>{{user.name}}</td>
+          <td>{{user.number}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

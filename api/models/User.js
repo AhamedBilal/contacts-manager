@@ -9,9 +9,10 @@ class User extends Sequelize.Model {
         allowNull: false,
         autoIncrement: true
       },
-      userName: {
+      name: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true,
+        defaultValue: 'unknown'
       },
       number: {
         type: Sequelize.STRING,
