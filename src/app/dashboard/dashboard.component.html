@@ -24,8 +24,7 @@
   <div>
     <mat-form-field appearance="legacy" class="float-left mr-4 mt-2">
       <mat-label>Search</mat-label>
-      <input matInput placeholder="Ex. Ahamed or 771422978" [(ngModel)]="search" (change)="searchUsers()" >
-      <mat-error>Name is Required</mat-error>
+      <input matInput [(ngModel)]="search" (change)="searchUsers()" >
     </mat-form-field>
     <span class="float-right">Total: {{users.length}}</span>
   </div>

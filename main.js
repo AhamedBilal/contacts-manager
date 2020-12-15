@@ -1,13 +1,18 @@
-const {app, BrowserWindow, Menu} = require('electron')
+const {app, BrowserWindow, Menu, screen} = require('electron')
 const path = require('path')
 
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
+
 function createWindow() {
+  const electronScreen = screen;
+  const size = electronScreen.getPrimaryDisplay().workAreaSize;
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    x: 0,
+    y: 0,
+    width: size.width,
+    height: size.height,
     icon: `${__dirname}/dist/contacts-manager/assets/logo.ico`,
     webPreferences: {
       nodeIntegration: true,

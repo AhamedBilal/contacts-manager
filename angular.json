@@ -69,7 +69,10 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "contacts-manager:build"
+            "browserTarget": "contacts-manager:build",
+            "allowedCommonJsDependencies": [
+              "xlsx"
+            ]
           },
           "configurations": {
             "production": {

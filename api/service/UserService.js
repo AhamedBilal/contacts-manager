@@ -47,12 +47,35 @@ module.exports = async () => {
 
   ipc.on('get-users', async (event, ...args) => {
     try {
-      const users = await User.findAll({
+      let users = await User.findAll({
         order: [['updatedAt', 'DESC']]
       });
-      event.returnValue = users.map(value => value.dataValues);
+      if (users.length > 0) {
+        event.returnValue = users.map(value => value.dataValues);
+      } else {
+        const result = await dialog.showOpenDialog({
+          buttonLabel: 'Select File',
+          properties: ['openFile'],
+          filters: [
+            {name: 'Sheets', extensions: ['xlsx']},
+          ]
+        });
+        if (result.canceled) {
+          event.returnValue = [];
+        } else {
+          const workbook = await XLSX.readFile(result.filePaths[0]);
+          const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+          await User.bulkCreate(json, {
+            updateOnDuplicate: ['number']
+          });
+          const us = await User.findAll({
+            order: [['updatedAt', 'DESC']]
+          });
+          event.returnValue = us.map(value => users.map(value => value.dataValues))
+        }
+      }
     } catch (ex) {
-      event.returnValue = null;
+      event.returnValue = [];
     }
 
   });
@@ -81,12 +104,6 @@ module.exports = async () => {
     }
   });
   ipc.on('generate', async (event, num) => {
-    // const workbook = await XLSX.readFile('C:\\Users\\Bilal\\Desktop\\contacts.xlsx');
-    // const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-    // await User.bulkCreate(json,{
-    //   updateOnDuplicate: ['number']
-    // })
-    // event.returnValue = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
     const result = await dialog.showOpenDialog({
       buttonLabel: 'Select Folder',
       properties: ['openDirectory']
@@ -95,8 +112,6 @@ module.exports = async () => {
       event.returnValue = result || num;
     } else {
       const temp = (await User.findAll()).map(value => value.dataValues);
-
-      const newArr = [];
       let i = 1;
       console.log(num);
       while (temp.length > 0) {
@@ -145,7 +160,7 @@ module.exports = async () => {
         }
 
       });
-      await User.bulkCreate(temp,{
+      await User.bulkCreate(temp, {
         updateOnDuplicate: ['number']
       })
       event.returnValue = 'successful';

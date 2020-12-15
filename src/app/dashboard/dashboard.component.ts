@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormGroupDirective, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ElectronService} from 'ngx-electron';
 import {UserService} from '../services/user.service';
 import {User} from '../dtos/user';
@@ -147,7 +147,7 @@ export class DashboardComponent implements OnInit {
 export class GenerateDialog {
   count = 250;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private dialog: MatDialogRef<GenerateDialog>) {
   }
 
   generate() {
@@ -155,6 +155,7 @@ export class GenerateDialog {
     this.userService.generateText(this.count)
       .subscribe(value => {
         console.log(value);
+        this.dialog.close();
       });
   }
 }
