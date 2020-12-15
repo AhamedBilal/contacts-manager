@@ -14,20 +14,9 @@ function createWindow() {
       contextIsolation: false,  // false if you want to run 2e2 test with Spectron
       enableRemoteModule: true // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
     }
-  })
-
-  if (serve) {
-    console.log('served')
-    win.webContents.openDevTools();
-    require('electron-reload')(__dirname, {
-      electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
-    });
-    win.loadURL('http://localhost:4200');
-
-  } else {
-    win.setMenu(null)
-    win.loadURL(`file://${__dirname}/dist/contacts-manager/index.html`);
-  }
+  });
+  win.setMenu(null)
+  win.loadFile(`${__dirname}/dist/contacts-manager/index.html`);
 }
 
 app.whenReady().then(createWindow)
