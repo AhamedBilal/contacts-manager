@@ -70,7 +70,8 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "installerIcon": "dist/contacts-manager/assets/logo.ico",
-      "uninstallerIcon": "dist/contacts-manager/assets/logo.ico"
+      "uninstallerIcon": "dist/contacts-manager/assets/logo.ico",
+      "perMachine": true
     },
     "win": {
       "icon": "dist/contacts-manager/assets/logo.ico"

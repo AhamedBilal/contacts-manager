@@ -71,7 +71,7 @@ module.exports = async () => {
           const us = await User.findAll({
             order: [['updatedAt', 'DESC']]
           });
-          event.returnValue = us.map(value => users.map(value => value.dataValues))
+          event.returnValue = us.map(val => val.dataValues);
         }
       }
     } catch (ex) {
