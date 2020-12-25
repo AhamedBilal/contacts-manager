@@ -14,7 +14,7 @@
     "electron": "electron .",
     "electron-build": "ng build --prod",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "electron-builder --ia32",
     "postinstall": "electron-builder install-app-deps"
   },
   "private": true,
@@ -70,8 +70,7 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "installerIcon": "dist/contacts-manager/assets/logo.ico",
-      "uninstallerIcon": "dist/contacts-manager/assets/logo.ico",
-      "perMachine": true
+      "uninstallerIcon": "dist/contacts-manager/assets/logo.ico"
     },
     "win": {
       "icon": "dist/contacts-manager/assets/logo.ico"

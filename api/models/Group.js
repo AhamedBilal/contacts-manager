@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 
-class User extends Sequelize.Model {
+class Group extends Sequelize.Model {
   static init(sequelize) {
     return super.init({
-      userId: {
+      groupId: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         allowNull: false,
@@ -11,26 +11,20 @@ class User extends Sequelize.Model {
       },
       name: {
         type: Sequelize.STRING,
-        allowNull: true,
-        defaultValue: 'unknown'
-      },
-      number: {
-        type: Sequelize.STRING,
         allowNull: false,
-        unique: true
       }
     }, {
       sequelize,
-      tableName: 'user',
-      modelName: 'user'
+      tableName: 'group',
+      modelName: 'group'
     });
   }
   static associate(models) {
-    this.belongsToMany(models.Group, {
-      foreignKey: 'groupId',
+    this.belongsToMany(models.User, {
+      foreignKey: 'userId',
       through: 'UserGroup'
     });
   }
 }
 
-module.exports = User;
+module.exports = Group;

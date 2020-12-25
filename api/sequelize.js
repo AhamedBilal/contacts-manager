@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: './db/database.sqlite'
+  storage: process.env.USERPROFILE+'\\Contacts Manager\\database.sqlite'
 });
 
 module.exports = sequelize;

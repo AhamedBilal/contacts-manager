@@ -1,8 +1,10 @@
 const sequelize = require('./sequelize');
 const User = require('./models/User');
+const Group = require('./models/Group')
 
 const models = {
-    User: User.init(sequelize)
+    User: User.init(sequelize),
+    Group: Group.init(sequelize)
 }
 Object.values(models)
     .filter(model => typeof model.associate === 'function')
