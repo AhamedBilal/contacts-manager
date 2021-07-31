@@ -1,7 +1,12 @@
-<h3 mat-dialog-title>Numbers per file?</h3>
+<h3 mat-dialog-title>Options</h3>
 <mat-dialog-content>
-  <mat-form-field>
+  <mat-form-field class="mr-3">
+    <mat-label>Contacts per file</mat-label>
     <input matInput type="number" [(ngModel)]="count">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Contact Start With</mat-label>
+    <input matInput type="number" placeholder="Ex: 77" [maxLength]="2" [minLength]="2" [(ngModel)]="startWith">
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions align="end">

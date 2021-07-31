@@ -4,6 +4,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {ElectronService} from 'ngx-electron';
 import {UserService} from '../services/user.service';
 import {User} from '../dtos/user';
+import {start} from 'repl';
 
 @Component({
   selector: 'app-dashboard',
@@ -146,13 +147,14 @@ export class DashboardComponent implements OnInit {
 })
 export class GenerateDialog {
   count = 250;
+  startWith = null;
 
   constructor(private userService: UserService, private dialog: MatDialogRef<GenerateDialog>) {
   }
 
   generate() {
     console.log('generating');
-    this.userService.generateText(this.count)
+    this.userService.generateText(this.count, this.startWith)
       .subscribe(value => {
         console.log(value);
         this.dialog.close();

@@ -21,7 +21,7 @@ import {MatDialogModule} from '@angular/material/dialog';
   declarations: [
     AppComponent,
     DashboardComponent,
-    GenerateDialog
+    GenerateDialog,
   ],
   entryComponents: [GenerateDialog],
   imports: [

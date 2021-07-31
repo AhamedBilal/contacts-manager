@@ -103,7 +103,7 @@ module.exports = async () => {
       event.returnValue = null;
     }
   });
-  ipc.on('generate', async (event, num) => {
+  ipc.on('generate', async (event, num, startWith = null) => {
     const result = await dialog.showOpenDialog({
       buttonLabel: 'Select Folder',
       properties: ['openDirectory']
@@ -111,12 +111,23 @@ module.exports = async () => {
     if (result.canceled) {
       event.returnValue = result || num;
     } else {
-      const temp = (await User.findAll()).map(value => value.dataValues);
+      let temp;
+      if (startWith !== null) {
+        temp = (await User.findAll({
+          where: {
+            number: {
+              [Op.like]: `${startWith}%`
+            }
+          }
+        })).map(value => value.dataValues);
+      } else {
+        temp = (await User.findAll()).map(value => value.dataValues);
+      }
       let i = 1;
       console.log(num);
       while (temp.length > 0) {
         const ts = temp.splice(0, num);
-        const user = ts.map(val => val.number).join('\n');
+        const user = ts.map(val => `${val.name},${val.number}`).join('\n');
         writeFile(result.filePaths[0] + `\\text${new Date().toISOString().slice(0, 10).replace(/-/g, "")}(${i}).txt`, user, function (err, data) {
           if (err) {
             console.log(err)
