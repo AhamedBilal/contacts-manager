@@ -1,6 +1,6 @@
 {
   "name": "contacts-manager",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "main": "main.js",
   "author": "Ahamed Bilal",
   "description": "Contact managing App",
@@ -61,7 +61,7 @@
   },
   "build": {
     "appId": "com.bilal.contactmanager",
-    "productName": "Conatct Manager App",
+    "productName": "Contact Manager App",
     "target": "NSIS",
     "directories": {
       "output": "build"

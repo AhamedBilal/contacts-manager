@@ -148,13 +148,15 @@ export class DashboardComponent implements OnInit {
 export class GenerateDialog {
   count = 250;
   startWith = null;
+  format = 'text';
+  outputType = 1;
 
   constructor(private userService: UserService, private dialog: MatDialogRef<GenerateDialog>) {
   }
 
   generate() {
     console.log('generating');
-    this.userService.generateText(this.count, this.startWith)
+    this.userService.generateText(this.count, this.startWith, this.outputType, this.format)
       .subscribe(value => {
         console.log(value);
         this.dialog.close();

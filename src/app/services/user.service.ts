@@ -42,8 +42,8 @@ export class UserService {
     );
   }
 
-  generateText(count: number, startWith: any) {
-    return of(this.electron.ipcRenderer.sendSync('generate', count, startWith)).pipe(
+  generateText(count: number, startWith: any, out = 1, format = 'text') {
+    return of(this.electron.ipcRenderer.sendSync('generate', count, startWith, out, format)).pipe(
       catchError((error: any) => Observable.throw(error.json))
     );
   }

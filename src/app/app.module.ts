@@ -16,6 +16,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -24,23 +25,24 @@ import {MatDialogModule} from '@angular/material/dialog';
     GenerateDialog,
   ],
   entryComponents: [GenerateDialog],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    NgxElectronModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatPaginatorModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatTabsModule,
-    MatDividerModule,
-    MatDialogModule,
-    FormsModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        NgxElectronModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule,
+        MatPaginatorModule,
+        MatIconModule,
+        MatTooltipModule,
+        MatTabsModule,
+        MatDividerModule,
+        MatDialogModule,
+        FormsModule,
+        MatSelectModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })

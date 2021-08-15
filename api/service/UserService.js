@@ -103,7 +103,7 @@ module.exports = async () => {
       event.returnValue = null;
     }
   });
-  ipc.on('generate', async (event, num, startWith = null) => {
+  ipc.on('generate', async (event, num, startWith = null, out = 1, format = 'text') => {
     const result = await dialog.showOpenDialog({
       buttonLabel: 'Select Folder',
       properties: ['openDirectory']
@@ -127,13 +127,34 @@ module.exports = async () => {
       console.log(num);
       while (temp.length > 0) {
         const ts = temp.splice(0, num);
-        const user = ts.map(val => `${val.name},${val.number}`).join('\n');
-        writeFile(result.filePaths[0] + `\\text${new Date().toISOString().slice(0, 10).replace(/-/g, "")}(${i}).txt`, user, function (err, data) {
-          if (err) {
-            console.log(err)
+        if (format === 'text') {
+          let user;
+          if (out === 1) {
+            user = ts.map(val => `${val.name},${val.number}`).join('\n');
           } else {
+            user = ts.map(val => `${val.number}`).join('\n');
           }
-        });
+          writeFile(result.filePaths[0] + `\\text${new Date().toISOString().slice(0, 10).replace(/-/g, "")}(${i}).txt`, user, function (err, data) {
+            if (err) {
+              console.log(err)
+            } else {
+            }
+          });
+        } else {
+          let mapArray;
+          if (out === 1) {
+            mapArray = ts.map(val => [val.name, val.number]);
+          } else {
+            mapArray = ts.map(val => [val.number]);
+          }
+          const wb = XLSX.utils.book_new();
+          const ws = XLSX.utils.aoa_to_sheet(mapArray);
+          XLSX.utils.book_append_sheet(wb, ws);
+          XLSX.writeFile(wb, result.filePaths[0] + `\\excel${new Date().toISOString().slice(0, 10).replace(/-/g, "")}(${i}).xlsx`);
+
+        }
+
+
         i++;
       }
       event.returnValue = 'saved';
